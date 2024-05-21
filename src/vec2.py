@@ -7,8 +7,8 @@ class Vec2:
             self.x: float = x
             self.y: float = y
         elif (type(x) is Vec2) and (type(y) is Vec2):
-            self.x = x.x + y.x
-            self.y = x.y + y.y
+            self.x = y.x - x.x
+            self.y = y.y - x.y
         else:
             raise Exception("Vec2: wrong args")
         
@@ -26,6 +26,9 @@ class Vec2:
         
     def __truediv__(self, v: float) -> 'Vec2':
         return Vec2(self.x / v, self.y / v)
+
+    def coordinate(self):
+        return (self.x, self.y)
 
     def module(self) -> float:
         return (self.x ** 2 + self.y ** 2) ** 0.5

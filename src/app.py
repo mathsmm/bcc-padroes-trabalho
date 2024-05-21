@@ -1,7 +1,6 @@
 import pygame as pg
 from pygame.locals import *
 
-
 class App:
     def __init__(
         self, 
@@ -30,14 +29,14 @@ class App:
     def start_main_loop(self):
         screen_color = (0, 0, 0)
         line_color = (255, 0, 0)
+        # PREPARAR LISTA DE CORPOS
+        # CRIAR OBJETO ITERADOR
 
         while self.running:
-
             self.screen.fill(screen_color)
-
             self.handle_events()
             self.loop_bodies()
-
+            
             pg.draw.line(self.screen, line_color, (60, 80), (130, 100))
             pg.display.flip()
 
@@ -53,5 +52,8 @@ class App:
                 self.running = False
 
     def loop_bodies(self):
-        for body in self.bodies:
-            pass
+        # CRIAR ITERADOR PRA ISTO
+        # for b1 in self.bodies:
+        #     for b2 in self.bodies:
+        #         if b1 == b2: continue
+        pass
