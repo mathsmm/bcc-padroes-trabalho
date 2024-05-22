@@ -1,5 +1,9 @@
 import pygame as pg
 from pygame.locals import *
+from src.vec2 import Vec2
+from src.body_behavior import *
+from src.circle_body import CircleBody
+from src.rect_body import RectBody
 
 class App:
     def __init__(
@@ -27,17 +31,29 @@ class App:
         pg.quit()
 
     def start_main_loop(self):
-        screen_color = (0, 0, 0)
-        line_color = (255, 0, 0)
         # PREPARAR LISTA DE CORPOS
+        b1 = CircleBody(Vec2(50, 50), Vec2(15, 25), Vec2(0, 0), 40, 10)
+        b1.move_behav = DoMove(b1)
+        b1.vel_display_behav = DoDisplayVel(self.screen, b1)
+        b1.body_display_behav = DisplayCircle(self.screen, b1)
+
+        b2 = RectBody(Vec2(250, 400), Vec2(10, 5), Vec2(0, 0), 40, 30, 70)
+        b2.move_behav = DontMove()
+        b2.vel_display_behav = DontDisplayVel()
+        b2.body_display_behav = DisplayRect(self.screen, b2)
+        
+        self.bodies.append(b1)
+        self.bodies.append(b2)
+
         # CRIAR OBJETO ITERADOR
+        # TODO
 
         while self.running:
-            self.screen.fill(screen_color)
+            self.screen.fill((0, 0, 0))
             self.handle_events()
             self.loop_bodies()
             
-            pg.draw.line(self.screen, line_color, (60, 80), (130, 100))
+            # pg.draw.line(self.screen, line_color, (60, 80), (130, 100))
             pg.display.flip()
 
     def handle_events(self):
@@ -52,8 +68,8 @@ class App:
                 self.running = False
 
     def loop_bodies(self):
-        # CRIAR ITERADOR PRA ISTO
-        # for b1 in self.bodies:
-        #     for b2 in self.bodies:
-        #         if b1 == b2: continue
-        pass
+        for b1 in self.bodies:
+            # for b2 in self.bodies
+            b1.move(0.002)
+            b1.display((255, 0, 0))
+            b1.display_vel((0, 255, 0))

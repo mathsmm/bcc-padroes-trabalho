@@ -2,15 +2,13 @@ from pygame.locals import *
 import math
 
 class Vec2:
-    def __init__(self, x: float | 'Vec2', y: float | 'Vec2') -> None:
-        if (type(x) is float) and (type(y) is float):
-            self.x: float = x
-            self.y: float = y
-        elif (type(x) is Vec2) and (type(y) is Vec2):
+    def __init__(self, x, y) -> None:
+        if (type(x) is Vec2) and (type(y) is Vec2):
             self.x = y.x - x.x
             self.y = y.y - x.y
         else:
-            raise Exception("Vec2: wrong args")
+            self.x: float = float(x)
+            self.y: float = float(y)
         
     def __add__(self, v: 'Vec2') -> 'Vec2':
         return Vec2(self.x + v.x, self.y + v.y)
@@ -18,7 +16,7 @@ class Vec2:
     def __sub__(self, v: 'Vec2') -> 'Vec2':
         return Vec2(self.x - v.x, self.y - v.y)
     
-    def __mul__(self, v: float | 'Vec2') -> float | 'Vec2':
+    def __mul__(self, v):
         if type(v) is float:
             return Vec2(self.x * v, self.y * v)
         elif type(v) is Vec2:
@@ -26,9 +24,6 @@ class Vec2:
         
     def __truediv__(self, v: float) -> 'Vec2':
         return Vec2(self.x / v, self.y / v)
-
-    def coordinate(self):
-        return (self.x, self.y)
 
     def module(self) -> float:
         return (self.x ** 2 + self.y ** 2) ** 0.5

@@ -1,5 +1,5 @@
-from body import Body
-from vec2 import Vec2
+from src.body import Body
+from src.vec2 import Vec2
 
 class CircleBody(Body):
     def __init__(
