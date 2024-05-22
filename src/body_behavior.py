@@ -40,6 +40,9 @@ class DoDisplayVel(VelDisplayBehav):
 
     def display(self, color: tuple):
         arrow_mod = self.b.vel.module() * 0.10
+        if arrow_mod < 0.01:
+            return
+
         l_arrow_segment = (self.b.vel.unit() * arrow_mod)
         l_arrow_segment.rotate(PI_MINUS_PI_DIV_6)
         r_arrow_segment = (self.b.vel.unit() * arrow_mod)

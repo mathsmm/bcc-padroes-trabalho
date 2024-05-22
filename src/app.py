@@ -33,18 +33,50 @@ class App:
 
     def start_main_loop(self):
         # PREPARAR LISTA DE CORPOS
-        b1 = CircleBody(Vec2(50, 50), Vec2(15, 25), Vec2(0, 0), 40, 10)
+        for i in range(0, 100):
+            self.bodies.append(
+                CircleBody(
+                    Vec2(80 * ((i % 10) + 1), 40 * ((i // 10) + 1) + 100),
+                    Vec2(0, 0),
+                    Vec2(0, 3),
+                    10,
+                    15
+                )
+            )
+            self.bodies[i].move_behav = DoMove(self.bodies[i])
+            self.bodies[i].vel_display_behav = DoDisplayVel(self.screen, self.bodies[i])
+            self.bodies[i].body_display_behav = DisplayCircle(self.screen, self.bodies[i])
+
+        b1 = CircleBody(Vec2(40, 40), Vec2(5, 5), Vec2(0, 3), 500, 25)
         b1.move_behav = DoMove(b1)
         b1.vel_display_behav = DoDisplayVel(self.screen, b1)
         b1.body_display_behav = DisplayCircle(self.screen, b1)
 
-        b2 = RectBody(Vec2(250, 400), Vec2(10, 5), Vec2(0, 0), 40, 30, 70)
-        b2.move_behav = DontMove()
-        b2.vel_display_behav = DontDisplayVel()
-        b2.body_display_behav = DisplayRect(self.screen, b2)
+        r1 = RectBody(Vec2(0, 0), Vec2(0, 0), Vec2(0, 0), 100, self.window_heigth, 20)
+        r1.move_behav = DontMove()
+        r1.vel_display_behav = DontDisplayVel()
+        r1.body_display_behav = DisplayRect(self.screen, r1)
+
+        r2 = RectBody(Vec2(self.window_width - 20, 0), Vec2(0, 0), Vec2(0, 0), 100, self.window_heigth, 20)
+        r2.move_behav = DontMove()
+        r2.vel_display_behav = DontDisplayVel()
+        r2.body_display_behav = DisplayRect(self.screen, r2)
+
+        r3 = RectBody(Vec2(20, 0), Vec2(0, 0), Vec2(0, 0), 100, 20, self.window_width - 40)
+        r3.move_behav = DontMove()
+        r3.vel_display_behav = DontDisplayVel()
+        r3.body_display_behav = DisplayRect(self.screen, r3)
+
+        r4 = RectBody(Vec2(20, self.window_heigth - 20), Vec2(0, 0), Vec2(0, 0), 100, 20, self.window_width - 40)
+        r4.move_behav = DontMove()
+        r4.vel_display_behav = DontDisplayVel()
+        r4.body_display_behav = DisplayRect(self.screen, r4)
         
         self.bodies.append(b1)
-        self.bodies.append(b2)
+        self.bodies.append(r1)
+        self.bodies.append(r2)
+        self.bodies.append(r3)
+        self.bodies.append(r4)
 
         # CRIAR OBJETO ITERADOR
         # TODO
@@ -71,7 +103,7 @@ class App:
     def loop_bodies(self):
         for b1 in self.bodies:
             # for b2 in self.bodies
-            b1.move(0.005)
+            b1.move(0.1)
             b1.display((255, 0, 0))
             b1.display_vel((0, 255, 0))
 
