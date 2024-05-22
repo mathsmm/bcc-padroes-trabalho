@@ -50,17 +50,17 @@ class Vec2:
     def vcos(self) -> float:
         return self.x / self.module()
     
-    # def argument(self) -> float:
-    #     vsin = self.vsin()
-    #     vcos = self.vcos()
-    #     if vsin < 0.0:
-    #         return 2 * math.pi - math.acos(vcos)
-    #     elif vsin > 0.0:
-    #         return math.acos(vcos)
-    #     elif vsin == 0.0 and vcos == 1.0:
-    #         return 0.0
-    #     else: # if vsin == 0.0 and v cos = -1.0
-    #         return math.pi
+    def argument(self) -> float:
+        vsin = self.vsin()
+        vcos = self.vcos()
+        if vsin < 0.0:
+            return 2 * math.pi - math.acos(vcos)
+        elif vsin > 0.0:
+            return math.acos(vcos)
+        elif vsin == 0.0 and vcos == 1.0:
+            return 0.0
+        else: # if vsin == 0.0 and v cos = -1.0
+            return math.pi
         
     def rotate(self, theta: float) -> None:
         t_sin = math.sin(theta)

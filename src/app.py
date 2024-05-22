@@ -4,6 +4,7 @@ from src.vec2 import Vec2
 from src.body_behavior import *
 from src.circle_body import CircleBody
 from src.rect_body import RectBody
+from src.collision_logic import CollisionLogic
 
 class App:
     def __init__(
@@ -70,6 +71,19 @@ class App:
     def loop_bodies(self):
         for b1 in self.bodies:
             # for b2 in self.bodies
-            b1.move(0.002)
+            b1.move(0.005)
             b1.display((255, 0, 0))
             b1.display_vel((0, 255, 0))
+
+            for b2 in self.bodies:
+                if b1 == b2:
+                    continue
+
+                if type(b1) is CircleBody   and type(b2) is CircleBody:
+                    CollisionLogic.circle_circle_collision(b1, b2)
+                elif type(b1) is CircleBody and type(b2) is RectBody:
+                    CollisionLogic.circle_rect_collision(b1, b2)
+                elif type(b1) is RectBody   and type(b2) is CircleBody:
+                    CollisionLogic.circle_rect_collision(b2, b1)
+                elif type(b1) is RectBody   and type(b2) is RectBody:
+                    pass
