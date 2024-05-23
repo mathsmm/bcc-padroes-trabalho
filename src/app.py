@@ -5,6 +5,7 @@ from src.body_behavior import *
 from src.circle_body import CircleBody
 from src.rect_body import RectBody
 from src.collision_logic import CollisionLogic
+from src.time_handler import TimeHandler
 
 class App:
     def __init__(
@@ -17,6 +18,7 @@ class App:
         self.fps = fps
         self.window_width = window_width
         self.window_heigth = window_height
+        self.time_handler = TimeHandler(fps)
 
         # Bodies
         self.bodies = []
@@ -38,7 +40,7 @@ class App:
                 CircleBody(
                     Vec2(80 * ((i % 10) + 1), 40 * ((i // 10) + 1) + 100),
                     Vec2(0, 0),
-                    Vec2(0, 3),
+                    Vec2(0, 9.80665),
                     10,
                     15
                 )
@@ -47,7 +49,7 @@ class App:
             self.bodies[i].vel_display_behav = DoDisplayVel(self.screen, self.bodies[i])
             self.bodies[i].body_display_behav = DisplayCircle(self.screen, self.bodies[i])
 
-        b1 = CircleBody(Vec2(40, 40), Vec2(5, 5), Vec2(0, 3), 500, 25)
+        b1 = CircleBody(Vec2(40, 40), Vec2(35, 35), Vec2(0, 9.80665), 500, 25)
         b1.move_behav = DoMove(b1)
         b1.vel_display_behav = DoDisplayVel(self.screen, b1)
         b1.body_display_behav = DisplayCircle(self.screen, b1)
@@ -82,12 +84,16 @@ class App:
         # TODO
 
         while self.running:
+            self.time_handler.ticks = pg.time.get_ticks()
+
             self.screen.fill((0, 0, 0))
             self.handle_events()
             self.loop_bodies()
             
             # pg.draw.line(self.screen, line_color, (60, 80), (130, 100))
             pg.display.flip()
+
+            self.time_handler.wait()
 
     def handle_events(self):
         for event in pg.event.get():
@@ -103,7 +109,7 @@ class App:
     def loop_bodies(self):
         for b1 in self.bodies:
             # for b2 in self.bodies
-            b1.move(0.1)
+            b1.move(self.time_handler.rDT)
             b1.display((255, 0, 0))
             b1.display_vel((0, 255, 0))
 
