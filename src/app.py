@@ -29,13 +29,8 @@ class App:
         self.screen = pg.display.set_mode((window_width, window_height))
 
     def init(self):
-        self.running = True
-        self.start_main_loop()
-        pg.quit()
-
-    def start_main_loop(self):
         # PREPARAR LISTA DE CORPOS
-        for i in range(0, 100):
+        for i in range(0, 50):
             self.bodies.append(
                 CircleBody(
                     Vec2(80 * ((i % 10) + 1), 40 * ((i // 10) + 1) + 100),
@@ -83,10 +78,17 @@ class App:
         # CRIAR OBJETO ITERADOR
         # TODO
 
+        self.running = True
+        self.start_main_loop()
+
+        pg.quit()
+
+    def start_main_loop(self):
         while self.running:
             self.time_handler.ticks = pg.time.get_ticks()
 
             self.screen.fill((0, 0, 0))
+
             self.handle_events()
             self.loop_bodies()
             
