@@ -20,10 +20,7 @@ class BodyIterator(Iterator):
         # Deve retornar pares de corpos (b1, b2), onde
         # cada corpo só é par de outro corpo uma única vez
         def get_pairs_len(body_list_length: int):
-            s = 0
-            for i in range(body_list_length):
-                s += i
-            return s
+            return int((body_list_length**2 - body_list_length) / 2)
 
         combinations = itertools.combinations(body_list, 2)
         self.pairs = list()
