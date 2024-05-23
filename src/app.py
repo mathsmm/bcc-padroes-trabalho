@@ -1,11 +1,12 @@
 import pygame as pg
 from pygame.locals import *
 from src.vec2 import Vec2
-from src.body_behavior import *
+from src.body_strategy import *
 from src.circle_body import CircleBody
 from src.rect_body import RectBody
 from src.collision_logic import CollisionLogic
 from src.time_handler import TimeHandler
+from src.body_iterator import BodyIterator
 
 class App:
     def __init__(
@@ -21,7 +22,7 @@ class App:
         self.time_handler = TimeHandler(fps)
 
         # Bodies
-        self.bodies = []
+        self.body_iter: BodyIterator = None
         self.circ_vtx_qty = 24
 
         # pygame
@@ -30,7 +31,8 @@ class App:
 
     def init(self):
         # PREPARAR LISTA DE CORPOS
-        for i in range(0, 50):
+        self.bodies = []
+        for i in range(0, 100):
             self.bodies.append(
                 CircleBody(
                     Vec2(80 * ((i % 10) + 1), 40 * ((i // 10) + 1) + 100),
@@ -76,7 +78,7 @@ class App:
         self.bodies.append(r4)
 
         # CRIAR OBJETO ITERADOR
-        # TODO
+        self.body_iter = BodyIterator(self.bodies)
 
         self.running = True
         self.start_main_loop()
@@ -109,21 +111,23 @@ class App:
                 self.running = False
 
     def loop_bodies(self):
-        for b1 in self.bodies:
-            # for b2 in self.bodies
-            b1.move(self.time_handler.rDT)
-            b1.display((255, 0, 0))
-            b1.display_vel((0, 255, 0))
+        # Itera uma vez sobre cada corpo para mostrá-los e movê-los
+        for b in self.bodies:
+            b.move(self.time_handler.rDT)
+            b.display((255, 0, 0))
+            b.display_vel((0, 255, 0))
 
-            for b2 in self.bodies:
-                if b1 == b2:
-                    continue
+        # Itera uma segunda vez sobre cada combinação de par
+        # entre corpos para verificar colisões
+        self.body_iter.first()
+        while self.body_iter.has_next():
+            b1, b2 = self.body_iter.next()
 
-                if type(b1) is CircleBody   and type(b2) is CircleBody:
-                    CollisionLogic.circle_circle_collision(b1, b2)
-                elif type(b1) is CircleBody and type(b2) is RectBody:
-                    CollisionLogic.circle_rect_collision(b1, b2)
-                elif type(b1) is RectBody   and type(b2) is CircleBody:
-                    CollisionLogic.circle_rect_collision(b2, b1)
-                elif type(b1) is RectBody   and type(b2) is RectBody:
-                    pass
+            if type(b1) is CircleBody   and type(b2) is CircleBody:
+                CollisionLogic.circle_circle_collision(b1, b2)
+            elif type(b1) is CircleBody and type(b2) is RectBody:
+                CollisionLogic.circle_rect_collision(b1, b2)
+            elif type(b1) is RectBody   and type(b2) is CircleBody:
+                CollisionLogic.circle_rect_collision(b2, b1)
+            elif type(b1) is RectBody   and type(b2) is RectBody:
+                pass
