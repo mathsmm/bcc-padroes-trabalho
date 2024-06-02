@@ -25,7 +25,8 @@ class CircleBody{
 
 class App{
   [...]
-  bodies: list
+  circle_bodies: list
+  rect_bodies: list
 }
 
 stereotype CollisionLogic{
